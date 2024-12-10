@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title> Spring Boot </title>
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <title> Spring Boot x Thymeleaf</title>
+    <link  th:href="@{/css/bootstrap.mi n.css}" rel="stylesheet">
 
 </head>
 <body>
 <h3> HOME PAGE </h3>
+<h2 th:text="${message}"></h2>
 <p>
     <a href="/login">Login</a>  <a href="/user/list">User management</a>
 </p>
