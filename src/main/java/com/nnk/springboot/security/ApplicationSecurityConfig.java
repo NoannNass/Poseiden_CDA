@@ -1,8 +1,10 @@
 package com.nnk.springboot.security;
 
 
+import com.nnk.springboot.service.AuthentificationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,15 +18,35 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final AuthentificationService authentificationService;
+
+    public ApplicationSecurityConfig(AuthentificationService authentificationService) {
+        this.authentificationService = authentificationService;
+    }
+
+
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth
+//                .inMemoryAuthentication()
+//                .withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN")
+//                .and()
+//                .withUser("user").password(passwordEncoder().encode("user")).roles("USER")
+//        ;
+//    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .inMemoryAuthentication()
-                .withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN")
-                .and()
-                .withUser("user").password(passwordEncoder().encode("user")).roles("USER")
-        ;
+        auth.authenticationProvider(authenticationProvider());
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(authentificationService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+
     }
 
     @Bean
@@ -51,13 +73,5 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
-
-    // implémenter UserDetailsService
-//    public UserDetailsService user() {
-//        UserDetailsService user = User.builder()
-//                .username("username")
-//                .
-//
-//    }
 
 }
