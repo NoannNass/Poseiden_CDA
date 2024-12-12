@@ -7,6 +7,9 @@ xmlns:th="http://www.thymeleaf.org">
 </head>
 <body>
 
+<div th:if="${param.logout}" class="alert alert-success">
+    Vous avez été déconnecté avec succès.
+</div>
     <form th:action="@{/login}" method="post">
         <div>
             <label for="username">Username:</label>
@@ -20,6 +23,11 @@ xmlns:th="http://www.thymeleaf.org">
             <button type="submit">Login</button>
         </div>
     </form>
+<form th:action="@{/logout}" method="POST">
+    <button type="submit" class="btn btn-danger">Logout</button>
+</form>
+
+
 
 </body>
 </html>

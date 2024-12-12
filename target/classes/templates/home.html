@@ -2,66 +2,101 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <title>Spring Boot x Thymeleaf</title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/css/custom-style.css}" rel="stylesheet"> <!-- Ajouter vos styles personnalisés -->
+    <link th:href="@{/css/custom-style.css}" rel="stylesheet">
 </head>
+
 <body>
-<div class="container mt-5">
+<!-- Navbar avec tous les boutons -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <!-- Nom/logo de l'application -->
+        <a class="navbar-brand" href="/">Poseiden</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <!-- Lien vers la page d'accueil -->
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}">Accueil</a>
+                </li>
+                <!-- Lien vers la BidList -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/bidList/list">BidList</a>
+                </li>
+                <!-- Gestion des utilisateurs (seulement visible pour ROLE_ADMIN) -->
+                <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
+                    <a class="nav-link" href="/user/list">Gestion des utilisateurs</a>
+                </li>
+                <!-- Connexion (si l'utilisateur n'est pas connecté) -->
+                <li sec:authorize="!isAuthenticated()" class="nav-item" >
+                    <a class="nav-link" href="/login">Connexion</a>
+                </li>
+                <li sec:authorize="!isAuthenticated()" class="nav-item">
+                    <button onclick="location.href='/oauth2/authorization/github'" class="btn btn-dark m-2">Login avec GitHub</button>
+                </li>
+                <!-- Déconnexion (si l'utilisateur est connecté) -->
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <form th:action="@{/app-logout}" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-link nav-link" style="padding: 0;">Déconnexion</button>
+                    </form>
+                </li>
+            </ul>
+            <!-- Informations utilisateur connecté -->
+            <span sec:authorize="isAuthenticated()" class="navbar-text ms-3">
+                    Connecté en tant que : <strong th:text="${#authentication.principal.name}"></strong>
+                </span>
+        </div>
+    </div>
+</nav>
+
+<!-- Contenu principal -->
+<div class="container mt-4">
+    <!-- Message informatif ou alerte -->
+    <div th:if="${message}">
+        <div class="alert alert-info text-center" th:text="${message}"></div>
+    </div>
+
+    <!-- Texte de bienvenue -->
     <header class="text-center mb-4">
         <h1 class="display-4">Bienvenue sur notre site</h1>
-        <p class="lead">Accédez à notre gestion d'utilisateurs ou connectez-vous.</p>
+        <p class="lead">Gérez vos BidLists, utilisateurs, et connectez-vous pour plus d'options.</p>
     </header>
 
-
-    <main>
-        <div th:if="${message}">
-            <h2 class="text-center alert alert-info" th:text="${message}"></h2>
+    <!-- Panneau utilisateur (accessible au rôle ROLE_USER) -->
+    <div sec:authorize="hasRole('ROLE_USER')" class="card text-white bg-info mb-3">
+        <div class="card-header">Utilisateur</div>
+        <div class="card-body">
+            <h5 class="card-title">Bienvenue, utilisateur</h5>
+            <p class="card-text">Accédez à la gestion des BidLists via la navigation.</p>
         </div>
+    </div>
 
-        <div sec:authorize="hasRole('ROLE_USER')" class="card text-white bg-info mb-3">
-            <div class="card-header">User Panel</div>
-            <div class="card-body">
-                <h5 class="card-title">Bienvenue</h5>
-                <p class="card-text">Que voulez-vous faire aujourd'hui ?</p>
-            </div>
+    <!-- Panneau administrateur (accessible uniquement à ROLE_ADMIN) -->
+    <div sec:authorize="hasRole('ROLE_ADMIN')" class="card text-white bg-warning mb-3">
+        <div class="card-header">Admin</div>
+        <div class="card-body">
+            <h5 class="card-title">Bienvenue, Administrateur</h5>
+            <p class="card-text">Accédez à la gestion des utilisateurs et des BidLists depuis la navigation.</p>
         </div>
+    </div>
 
-        <div sec:authorize="hasRole('ROLE_ADMIN')" class="card text-white bg-warning mb-3">
-            <div class="card-header">Admin Panel</div>
-            <div class="card-body">
-                <h5 class="card-title">Bienvenue, Administrateur</h5>
-                <p class="card-text">Vous avez un accès complet à la gestion des utilisateurs.</p>
-                <a href="/user/list" class="btn btn-light">User Management</a>
-
-            </div>
+    <!-- Panneau pour les visiteurs non connectés -->
+    <div sec:authorize="!isAuthenticated()" class="card text-center border-danger mb-3">
+        <div class="card-body">
+            <h5 class="card-title">Non connecté ?</h5>
+            <p>Connectez-vous pour accéder aux fonctionnalités avancées.</p>
+            <p>
+                <a href="/login" class="btn btn-primary">Connexion</a>
+            </p>
         </div>
-
-        <div sec:authorize="!isAuthenticated()" class="card text-center border-danger mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Pas encore connecté ?</h5>
-                <button onclick="location.href='/oauth2/authorization/github'" class="btn btn-dark m-2">Login avec GitHub</button>
-                <div class="alert alert-warning">
-                    <p>Vous devez vous connecter pour accéder à cette page.</p>
-                    <a href="/login" class="btn btn-primary">Login</a>
-                </div>
-            </div>
-        </div>
-
-        <div sec:authorize="isAuthenticated()" class="card border-success">
-            <div class="card-body">
-                <h5 class="card-title">Profil de l'utilisateur</h5>
-                <p>Rôle(s) : <span sec:authentication="authorities"></span></p>
-                <div>
-                    <p>Utilisateur connecté : <strong th:inline="text">[[${#httpServletRequest.remoteUser}]]</strong></p>
-                    <form th:action="@{/app-logout}" method="POST">
-                        <button type="submit" class="btn btn-danger">Logout</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </main>
+    </div>
 </div>
 </body>
+
 </html>
