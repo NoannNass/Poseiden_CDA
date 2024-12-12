@@ -1,15 +1,76 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!DOCTkYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
+<<<<<<< Updated upstream
     <title> Spring Boot </title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+=======
+    <title> Spring Boot x Thymeleaf</title>
+    <link  th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+>>>>>>> Stashed changes
 
 </head>
 <body>
 <h3> HOME PAGE </h3>
+<<<<<<< Updated upstream
 <p>
     <a href="/login">Login</a>  <a href="/user/list">User management</a>
 </p>
+=======
+<h2 th:text="${message}"></h2>
+
+<a href="/"></a>
+
+<div sec:authorize="hasAuthority('USER')" class="mb-4">
+    <div class="card">
+        <h5>User Panel</h5>
+    </div>
+
+    <div class="card-body">
+        <p>Welcome User</p>
+
+    </div>
+</div>
+
+<div sec:authorize="hasAuthority('ADMIN')" class="mb-4">
+
+    <div class="card">
+        <h5>Admin Panel</h5>
+    </div>
+    <div class="card-body">
+        <p>Welcome, Admin</p>
+    </div>
+    <a href="/user/list">User Management</a>
+</div>
+
+<div sec:authorize="!isAuthenticated()">
+
+    <div class="alert alert-warning text-center">
+        <p>You need to login to access this page</p>
+        <a href="/login" class="btn btn-primary">Login</a>
+    </div>
+
+</div>
+<div sec:authorize="isAuthenticated()">
+
+    <p><span sec:authentication="authorities"></span></p>
+    <div class="alert alert-warning text-center">
+        <p>Welcome</p>
+        <a href="/login" class="btn btn-primary">Login</a>
+    </div>
+    <div class="col-6 text-right">
+        Logged in user: <b th:inline="text"  class="user"> [[${#httpServletRequest.remoteUser}]] </b>
+        <form th:action="@{/app-logout}" method="POST">
+            <input type="submit" value="Logout"/>
+        </form>
+    </div>
+</div>
+
+
+
+>>>>>>> Stashed changes
 
 </body>
 </html>

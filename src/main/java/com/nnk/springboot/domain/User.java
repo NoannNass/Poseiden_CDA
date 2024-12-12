@@ -1,5 +1,12 @@
 package com.nnk.springboot.domain;
 
+<<<<<<< Updated upstream
+=======
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+>>>>>>> Stashed changes
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
@@ -35,6 +42,14 @@ public class User {
         this.username = username;
     }
 
+<<<<<<< Updated upstream
+=======
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority( this.role)); // retoune le rôle de l'utilisateur
+    }
+
+>>>>>>> Stashed changes
     public String getPassword() {
         return password;
     }
