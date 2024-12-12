@@ -1,18 +1,17 @@
 package com.nnk.springboot.domain;
 
-<<<<<<< Updated upstream
-=======
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
->>>>>>> Stashed changes
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
@@ -24,6 +23,8 @@ public class User {
     private String fullname;
     @NotBlank(message = "Role is mandatory")
     private String role;
+
+
 
 
     public Integer getId() {
@@ -38,18 +39,35 @@ public class User {
         return username;
     }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
 
-<<<<<<< Updated upstream
-=======
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority( this.role)); // retoune le rôle de l'utilisateur
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role)); // retoune le rôle de l'utilisateur
     }
 
->>>>>>> Stashed changes
     public String getPassword() {
         return password;
     }

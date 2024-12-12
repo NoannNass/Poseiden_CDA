@@ -1,23 +1,24 @@
 package com.nnk.springboot.security;
 
+import com.nnk.springboot.service.AuthentificationService;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-<<<<<<< Updated upstream
-=======
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
->>>>>>> Stashed changes
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
-<<<<<<< Updated upstream
-=======
     private final AuthentificationService authentificationService;
 
     public ApplicationSecurityConfig(AuthentificationService authentificationService) {
@@ -65,20 +66,17 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Override
->>>>>>> Stashed changes
     protected void configure (HttpSecurity http) throws Exception{
         http
                 .authorizeRequests()
                 .antMatchers("/","/css/*").permitAll()
-                .antMatchers( "/user/edit/**").hasRole("ADMIN")
-                .antMatchers( "/user/list").hasAuthority("ADMIN")
-                .antMatchers( "/user/add", "/user/delete/","/user/update/").hasAuthority("ADMIN")
+                .antMatchers( "/user/edit/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers( "/user/list").hasAuthority("ROLE_ADMIN")
+                .antMatchers( "/user/add", "/user/delete/","/user/update/").hasAuthority("ROLE_ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
                 .formLogin()
-<<<<<<< Updated upstream
-=======
                 .loginPage("/login").permitAll()
                 .and()
                 .logout()
@@ -86,10 +84,14 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
-
->>>>>>> Stashed changes
+                .and()
+                .oauth2Login()
+                .loginPage("/login")
+                .defaultSuccessUrl("/", true)
                 ;
 
     }
+
+
 
 }
