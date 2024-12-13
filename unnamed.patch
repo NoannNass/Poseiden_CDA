@@ -1,0 +1,18 @@
+Index: src/main/resources/templates/layout.html
+===================================================================
+diff --git a/src/main/resources/templates/layout.html b/src/main/resources/templates/layout.html
+deleted file mode 100644
+--- a/src/main/resources/templates/layout.html	
++++ /dev/null	
+@@ -1,10 +0,0 @@
+-<!DOCTYPE html>
+-<html lang="en">
+-<head>
+-  <meta charset="UTF-8">
+-  <title>Title</title>
+-</head>
+-<body>
+-
+-</body>
+-</html>
+\ No newline at end of file

@@ -41,16 +41,17 @@
                     <button onclick="location.href='/oauth2/authorization/github'" class="btn btn-dark m-2">Login avec GitHub</button>
                 </li>
                 <!-- Déconnexion (si l'utilisateur est connecté) -->
-                <li sec:authorize="isAuthenticated()" class="nav-item">
+                <li sec:authorize="isAuthenticated()"class="nav-item">
                     <form th:action="@{/app-logout}" method="POST" style="display: inline;">
                         <button type="submit" class="btn btn-link nav-link" style="padding: 0;">Déconnexion</button>
                     </form>
                 </li>
             </ul>
             <!-- Informations utilisateur connecté -->
-            <span sec:authorize="isAuthenticated()" class="navbar-text ms-3">
-                    Connecté en tant que : <strong th:text="${#authentication.principal.name}"></strong>
-                </span>
+<!--            A modifier pour ne pas avoir d'erreur lors de la connexion-->
+<!--            <span sec:authorize="isAuthenticated()" class="navbar-text ms-3">-->
+<!--                    Connecté en tant que : <strong th:text="${#authentication.principal.name}"></strong>-->
+<!--                </span>-->
         </div>
     </div>
 </nav>
@@ -64,8 +65,8 @@
 
     <!-- Texte de bienvenue -->
     <header class="text-center mb-4">
-        <h1 class="display-4">Bienvenue sur notre site</h1>
-        <p class="lead">Gérez vos BidLists, utilisateurs, et connectez-vous pour plus d'options.</p>
+        <h1 class="display-4">Poseiden</h1>
+        <p class="lead">Le meilleur service de trading</p>
     </header>
 
     <!-- Panneau utilisateur (accessible au rôle ROLE_USER) -->
