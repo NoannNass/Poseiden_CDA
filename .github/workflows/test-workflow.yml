@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Step one
-    run: echo "Log from step one"
-    - name:  Step two
-    run: echo "Log from step two"
+      run: echo "Log from step one"
+    - name: Step two
+      run: echo "Log from step two"
   
