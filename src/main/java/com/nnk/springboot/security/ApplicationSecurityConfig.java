@@ -69,7 +69,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure (HttpSecurity http) throws Exception{
         http
                 .authorizeRequests()
-                .antMatchers("/","/css/*","/bidList/list").permitAll()
+                .antMatchers("/","/css/*","/bidList/list", "/curvePoint/list").permitAll()
                 .antMatchers( "/user/edit/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers( "/user/list").hasAuthority("ROLE_ADMIN")
                 .antMatchers( "/user/add", "/user/delete/","/user/update/").hasAuthority("ROLE_ADMIN")
@@ -89,9 +89,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .defaultSuccessUrl("/", true)
                 ;
-
     }
-
-
 
 }
